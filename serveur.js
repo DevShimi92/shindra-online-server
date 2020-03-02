@@ -30,9 +30,14 @@ io.on('connection', function (socket) {
     if (receiveData.username === '')
       {
         etat = "error";
+        socket.emit('authentification_Data',etat,data);
+        socket.disconnect();
+      }
+    else
+      {
+        socket.emit('authentification_Data',etat,data);
       }
     
-    socket.emit('authentification_Data',etat,data);
   });
 
   socket.on('disconnect', function () {
