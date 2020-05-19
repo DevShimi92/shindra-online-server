@@ -3,6 +3,7 @@ var app = express();
 var server = require('http').Server(app);
 var io  =  require ( 'socket.io' ) . listen ( server ) ;  
 var log4js = require('log4js');
+const fs = require('fs');
 
 log4js.configure({
   appenders: {
@@ -20,8 +21,12 @@ log4js.configure({
 });
 var log = log4js.getLogger('SERVER');
 
+// On charge le fichier de config
+let rawdata = fs.readFileSync('config.json');
+let configJSON = JSON.parse(rawdata);
 
-server.listen(8081, function () {
+
+server.listen(configJSON.port,configJSON.address, function () {
   log.info(`Listening ${server.address().address} on ${server.address().port}`);
 	
 io.on('connection', function (socket) {
