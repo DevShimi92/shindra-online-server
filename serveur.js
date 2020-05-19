@@ -4,6 +4,7 @@ var server = require('http').Server(app);
 var io  =  require ( 'socket.io' ) . listen ( server ) ;  
 var log4js = require('log4js');
 const fs = require('fs');
+const api = require('http')
 
 log4js.configure({
   appenders: {
@@ -25,9 +26,30 @@ var log = log4js.getLogger('SERVER');
 let rawdata = fs.readFileSync('config.json');
 let configJSON = JSON.parse(rawdata);
 
+const optionsPingAPI = {
+  hostname: configJSON.api.address,
+  port: configJSON.api.port,
+  path: '/',
+  method: 'GET'
+} 
 
 server.listen(configJSON.port,configJSON.address, function () {
   log.info(`Listening ${server.address().address} on ${server.address().port}`);
+
+  // Call de l'api : Si il n'est pas présent, le serveur se ferme (vu que on peut rien faire sans)
+  const req = api.request(optionsPingAPI, res => {
+      log.info('API présente');
+  });
+  
+  req.on('error', error => {
+      log.error(error)
+      server.close(() => {
+        log.error('API non présente, arrêt du serveur');
+      })
+  });
+
+  req.end();
+
 	
 io.on('connection', function (socket) {
   log.info('A user connected ');
