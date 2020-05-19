@@ -2,17 +2,35 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io  =  require ( 'socket.io' ) . listen ( server ) ;  
+var log4js = require('log4js');
+
+log4js.configure({
+  appenders: {
+    everything: { type: 'file', filename: 'logs/all-the-logs.log' },
+    emergencies: { type: 'file', filename: 'logs/error.log' },
+     console : {    type: "console" ,layout: {
+        type: 'pattern',
+        pattern: '%[[%d{dd-MM-yyyy hh:mm:ss.SSS}] [%p] %c -%] %m',
+    }},
+    'just-errors': { type: 'logLevelFilter', appender: 'emergencies', level: 'error' }
+  },
+  categories: {
+    default: { appenders: ['just-errors', 'everything','console' ], level: 'debug' }
+  }
+});
+var log = log4js.getLogger('SERVER');
+
 
 server.listen(8081, function () {
-  console.log(`Listening ${server.address().address} on ${server.address().port}`);
+  log.info(`Listening ${server.address().address} on ${server.address().port}`);
 	
 io.on('connection', function (socket) {
-  console.log('a user connected ');
+  log.info('A user connected ');
   
   socket.emit('authentification', {  });
 
   socket.on('Ping', function () {
-    console.log('Ping');
+    log.info('Ping');
      
     // ** Test de réponse ** //
     
@@ -20,7 +38,7 @@ io.on('connection', function (socket) {
   });
   
   socket.on('authentification', function (receiveData) {
-    console.log(receiveData);
+    log.info(receiveData);
     
     var etat; 
     var data;
@@ -41,7 +59,7 @@ io.on('connection', function (socket) {
   });
 
   socket.on('disconnect', function () {
-    console.log('user disconnected');
+    log.info('user disconnected');
 
   });
 });
