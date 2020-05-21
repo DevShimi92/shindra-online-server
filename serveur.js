@@ -159,7 +159,6 @@ io.on('connection', function (socket) {
               log.trace(data);
               socket.emit('authentification_Data',etat,data);
               socket.disconnect();
-              log.info(msg_error);
               log.error("Echec d'authentification d'utilisateur' : "+msg_error.error);
             }
             
@@ -169,10 +168,112 @@ io.on('connection', function (socket) {
     
   });
 
+  socket.on('ForgotPassword', function (receiveData) {
+    log.info(receiveData);
+
+    //Parse des donnés reçus
+    var MailData = querystring.stringify({
+      'email' : receiveData.email
+    });
+
+    var optionsForgotPassword = {
+      host: configJSON.api.address,
+      port: configJSON.api.port,
+      path: '/forgotpassword',
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': MailData.length
+      }
+    };
+
+    var data;
+    var msg_error;
+    var statusCode;
+
+    if (receiveData.email === '')
+      {
+        socket.emit('ForgotPassword_reply','NO');
+        socket.disconnect();
+        log.error("Echec du rest du mot de passe' : Champs manquant ");
+      }
+    else
+      { 
+
+        // function returns a Promise
+        function getPromise() {
+          return new Promise((resolve, reject) => {
+            var req = api.request(optionsForgotPassword, (res) => {
+              log.debug('statusCode :', res.statusCode);
+              statusCode = res.statusCode;
+              log.debug('headers : ', res.headers);
+              
+              res.on('data', (d) => {
+                ///process.stdout.write(d);
+                resolve(JSON.parse(d));
+              });
+            });
+            
+            req.on('error', (e) => {
+              log.error(e);
+              reject(e);
+            });
+            
+            req.write(MailData);
+            req.end();
+
+          });
+        }
+
+    // On met la promessse dans une fonction async
+        async function makeSynchronousRequest(request) {
+          try {
+            let http_promise = getPromise();
+            data = await http_promise;
+
+            // holds response from server that is passed when Promise is resolved
+        
+          }
+          catch(error) {
+            log.error(error);
+          }
+        }
+        // anonymous async function
+  (async function () {
+    // Attend la fin de la requet http
+    await makeSynchronousRequest(); 
+    // Aprés la fin de la requet http
+      if ( statusCode == 200 )
+        {
+          socket.emit('ForgotPassword_reply','OK');
+          socket.disconnect();
+          log.info("Réinitialisation du mot de passe réussi !");
+        }
+      else   
+        {
+          msg_error = JSON.parse(JSON.stringify(data))
+          socket.emit('ForgotPassword_reply','NO');
+          socket.disconnect();
+          log.error("Echec de la réinitialisation du mot de passe : "+msg_error.error);
+        }
+        
+    })();
+
+
+
+      }
+  
+
+
+  });
+  
+  
   socket.on('disconnect', function () {
     log.info('user disconnected');
 
   });
+  
+
 });
 
 
