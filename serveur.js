@@ -268,6 +268,116 @@ io.on('connection', function (socket) {
   });
   
   
+ 
+  socket.on('CreateAccount', function (receiveData) {
+    log.info(receiveData);
+
+    //Parse des donnés reçus
+    var CreateData = querystring.stringify({
+      'lastname' : receiveData.lastname,
+      'firstname' : receiveData.firstname,
+      'username' : receiveData.username,
+      'email' : receiveData.email,
+      'password' : receiveData.password,
+    });
+
+    var optionsCreateAccount = {
+      host: configJSON.api.address,
+      port: configJSON.api.port,
+      path: '/signup',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': CreateData.length
+      }
+    };
+
+    var data;
+    var msg_error;
+    var statusCode;
+
+    if( receiveData.lastname === '' || receiveData.firstname === ''  || receiveData.username === ''  || receiveData.email === ''  || receiveData.password === '' )
+      {
+        socket.emit('CreateAccount_reply','error');
+        socket.disconnect();
+        log.error("Echec du création de compte : Champs manquant ");
+      }
+    else
+      { 
+
+        // function returns a Promise
+        function getPromise() {
+          return new Promise((resolve, reject) => {
+            var req = api.request(optionsCreateAccount, (res) => {
+              log.debug('statusCode :', res.statusCode);
+              statusCode = res.statusCode;
+              log.debug('headers : ', res.headers);
+              
+              res.on('data', (d) => {
+                ///process.stdout.write(d);
+                resolve(JSON.parse(d));
+              });
+            });
+            
+            req.on('error', (e) => {
+              log.error(e);
+              reject(e);
+            });
+            
+            req.write(CreateData);
+            req.end();
+
+          });
+        }
+
+    // On met la promessse dans une fonction async
+        async function makeSynchronousRequest(request) {
+          try {
+            let http_promise = getPromise();
+            data = await http_promise;
+
+            // holds response from server that is passed when Promise is resolved
+        
+          }
+          catch(error) {
+            log.error(error);
+          }
+        }
+     
+   // anonymous async function
+  (async function () {
+    // Attend la fin de la requet http
+    await makeSynchronousRequest(); 
+    // Aprés la fin de la requet http
+      if ( statusCode == 200 )
+        {
+          socket.emit('CreateAccount_reply','OK');
+          socket.disconnect();
+          log.info("Création du compte réussi !");
+        }
+      else   
+        {
+          msg_error = JSON.parse(JSON.stringify(data))
+          socket.emit('CreateAccount_reply','error');
+          socket.disconnect();
+          log.error("Echec de la création de compte : "+msg_error.error);
+        }
+        
+    })();
+
+
+
+      }
+
+
+ socket.disconnect();
+
+
+  });
+
+
+
+
   socket.on('disconnect', function () {
     log.info('user disconnected');
 
