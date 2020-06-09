@@ -4,56 +4,59 @@ const db = require('../util/database');
 const Product = require('../models/Product');
 const Sequelize = require('sequelize');
 
-// Get product list
-router.get('/', (req, res) =>
+// Get product list /products // OK
+router.get('/all', (req, res) =>
   Product.findAll()
     .then(products => {
         // console.log(products);c
         // res.sendStatus(200);
-        //template
+        //template products.handlebars
         res.render('products', {
           products
         });
       })
     .catch(err => console.log(err)));
+  
+// ADD a new product list // OK
+router.post('/new', (req, res) =>{
+  Product.create({
+    
+    name: req.body.name,
+  }) //fin create
+    .then(addProducts =>
+      res.send(addProducts));
+    });
 
 
-// get single product by id 
+// get single product by id  // ok
 router.get('/find/:id', (req, res) => {
   Product.findAll({
     where: {
       idproduct: req.params.id
-    }
+    }// OK
   })
     .then(product =>
       res.send(product));
-      })
-    // .catch(err => console.log(err)));
+    });
+    // .catch(err => console.log(err));
 
-// ADD product list
-  router.post('/new', (req, res) =>{
-    Product.create({
-      text: req.body.text
-    })
-      .then(submitedProduct =>
-        res.send(submitedProduct));
-  });
 
-// delete product 
-router.get('/delete/:id', (req, res) => {
-  Product.destroy({
+
+// delete product //ok
+router.delete('/delete/:id', (req, res) => { //OK
+  Product.destroy({ //ok
     where: {
       idproduct: req.params.id
     }
-  })
-    .then(product =>
-      res.send("success"));
-      })
-    // .catch(err => console.log(err)));
+  }) // ok
+    .then(() =>
+      res.send("success")); //ok
+})
+    // .catch(err => console.log(err));
 
     // edit a todo
-// delete product 
-router.put('/edit', (req, res) => {
+// delete product  //ok
+router.put('/product/edit-products/:id', (req, res) => {
   Product.update(
     {
       text: req.body.text
@@ -69,9 +72,9 @@ router.put('/edit', (req, res) => {
     // .catch(err => console.log(err)));
 
 // Display add product form
-router.get('/add', (req, res) => res.render('add'))
+router.get('/product/add', (req, res) => res.render('add'))
 // Add a product 
-router.get('/add', (req, res) => {
+router.get('/product/add', (req, res) => {
   const data = {
     date: "2020-06-07 08:49:43+0000",
     price: 20.9,
@@ -89,4 +92,5 @@ router.get('/add', (req, res) => {
   .then(product => res.redirect('/products'))
   .catch(err => console.log(err));
 })
+
 module.exports = router;

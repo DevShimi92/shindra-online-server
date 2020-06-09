@@ -22,7 +22,7 @@ const Product = db.define('product', {
   },
   name: {
     type: Sequelize.STRING,
-    defaultValue: "test"
+    
   }
 });
 

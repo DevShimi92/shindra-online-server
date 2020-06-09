@@ -60,6 +60,7 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => 
     {res.render('index', { layout: 'landing' })});
 
+
 // app.get('/', (req, res) => {
 //     res.json({ message: 'homepage' })
 // })

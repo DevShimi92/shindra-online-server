@@ -1,4 +1,32 @@
-<section id="products">
+<div class="container">
+  <h1>Liste de produits</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nom du Produits</th>
+        <th scope="col">Prix</th>
+        <th scope="col">Date</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      <tr>
+        {{!-- <th scope="row">{{formatIndex @index}}</th> --}}
+        <td><a href="/products{{dataValues.idproduct}}">{{dataValues.idproduct}}</a></td>
+        <td>{{dataValues.name}}</td>
+        <td>{{dataValues.price}}</td>
+        <td>{{dataValues.date}}</td>
+        <td><button class="btn-secondary" href="/product/edit-products/:id{{dataValues.idproduct}}">Edit</button> <button class="btn-danger" href="/products/edit-products/{{dataValues.idproduct}}"
+            onclick="return confirm('Are you sure you want to Delete?')">Delete</button></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+{{!-- <section id="products">
     <h1>Products template</h1>
 
     {{#each products}}
@@ -11,4 +39,4 @@
     </div>
 
     {{/each}}
-</section>
+</section> --}}
