@@ -56,10 +56,13 @@ app.use((req, res, next) => {
 //         res.json({ users: result });
 //     })
 // })
-// Index route
+// Index route afficher la template OK
 app.get('/', (req, res) => 
     {res.render('index', { layout: 'landing' })});
 
+// Index route afficher la template OK
+app.get('/products/new', (req, res) => 
+    {res.render('add')});
 
 // app.get('/', (req, res) => {
 //     res.json({ message: 'homepage' })
