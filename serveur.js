@@ -15,6 +15,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 //Handlebars
 app.engine('handlebars', exphbs({ defaultLayout:'main'}));
 app.set('view engine', 'handlebars');
+app.set("views", path.join(__dirname, "./views"));
+app.disable('view cache');
 
 //Set static folder
 app.use(express.static(path.join(__dirname, '/public')));
@@ -55,7 +57,8 @@ app.use((req, res, next) => {
 //     })
 // })
 // Index route
-app.get('/', (req, res) => res.render('index', { layout: 'landing' }));
+app.get('/', (req, res) => 
+    {res.render('index', { layout: 'landing' })});
 
 // app.get('/', (req, res) => {
 //     res.json({ message: 'homepage' })
