@@ -2,18 +2,23 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const path = require('path');
-const port = 5003
+const port = 5003;
+const Product = require('./models/Product');
 
 // Connect Database
 const db = require('./util/database');
 
-const  app = express();
+const app = express();
 
 //Body Parser
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 
 //Handlebars
-app.engine('handlebars', exphbs({ defaultLayout:'main'}));
+app.engine('handlebars', exphbs({
+    defaultLayout: 'main'
+}));
 app.set('view engine', 'handlebars');
 app.set("views", path.join(__dirname, "./views"));
 app.disable('view cache');
@@ -30,6 +35,8 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', '*');
     next();
 })
+
+app.use('/products', require('./routes/products'));
 
 
 
@@ -57,12 +64,35 @@ app.use((req, res, next) => {
 //     })
 // })
 // Index route afficher la template OK
-app.get('/', (req, res) => 
-    {res.render('index', { layout: 'landing' })});
+app.get('/', (req, res) => {
+    res.render('index', {
+        layout: 'landing'
+    });
+});
 
 // Index route afficher la template OK
-app.get('/products/new', (req, res) => 
-    {res.render('add')});
+app.get('/products/new', (req, res) => {
+    res.render('add');
+});
+
+app.get("/product/edit-products/:id", async (req, res) => {
+    const { id } = req.params;
+    Product.findOne({
+        where: { idproduct: id },
+        raw: true
+    })
+        .then((product) => {
+            res.render('edit-product', { dataValues: product });
+        });
+});
+
+// app.get("/products/delete/:id", (req, res) => {
+//     res.render("edit-product");
+// });
+
+app.get('/products/all/delete', (req, res) => {
+    res.render(result);
+});
 
 // app.get('/', (req, res) => {
 //     res.json({ message: 'homepage' })

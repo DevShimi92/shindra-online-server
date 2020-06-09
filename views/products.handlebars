@@ -18,14 +18,17 @@
         <td>{{dataValues.name}}</td>
         <td>{{dataValues.price}}</td>
         <td>{{dataValues.date}}</td>
-        <td><button class="btn-secondary" href="/product/edit-products/:id{{dataValues.idproduct}}">Edit</button> <button class="btn-danger" href="/products/edit-products/{{dataValues.idproduct}}"
-            onclick="return confirm('Are you sure you want to Delete?')">Delete</button></td>
+        <td>
+          <button class="btn-danger deleteBtn" id="{{dataValues.idproduct}}">Delete</button>
+          <a class="btn-secondary" href="/product/edit-products/{{dataValues.idproduct}}">Edit</button> 
+        </td>
       </tr>
       {{/each}}
     </tbody>
   </table>
 </div>
 
+<script src="/manageProduct.js"></script>
 {{!-- <section id="products">
     <h1>Products template</h1>
 

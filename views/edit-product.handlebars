@@ -1,26 +1,21 @@
 <section id="add" class="container">
     <div class="form-wrap">
-      <h1>Add A Product</h1>
-  {{#each errors}}
-  <div class="error">
-    <p>{{text}}</p>
-  </div>
-  {{/each}}
-      <form action="/products/add" method="POST">
+      <h1>Edit A Product</h1>
+      <form action="/products/edit-product/{{dataValues.idproduct}}" method="POST">
         <div class="input-group">
           <label for="name">Product Title</label>
           <input type="text" name="name" id="name"  placeholder="eg. Small Wordpress website, React developer"
-            maxlength="100" value={{name}}>
+            maxlength="100" value={{dataValues.name}}>
         </div>
         <div class="input-group">
           <label for="budget">Price (Leave blank for unknown)</label>
-          <input type="number" name="price" id="price" class="input-box" placeholder="eg. 500, 5000, 10000" value={{price}}>
+          <input type="number" name="price" id="price" class="input-box" placeholder="eg. 500, 5000, 10000" value={{dataValues.price}}>
         </div>
         <div class="input-group">
           <label for="description">Product Date</label>
-          {{date}}
+          {{dataValues.date}} 
         </div>
-        <input type="submit" value="Add Product" class="btn btn-reverse">
+        <input type="submit" value="Edit Product" class="btn btn-reverse">
       </form>
     </div>
   </section>

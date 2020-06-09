@@ -5,10 +5,10 @@ const db = require('../util/database');
 
 const Product = db.define('product', {
   idproduct: {
-    type: Sequelize.STRING,
-    // allowNull: true,
-    primaryKey:true,
-    
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
   },
   date: {
     type: Sequelize.DATE,
@@ -22,7 +22,6 @@ const Product = db.define('product', {
   },
   name: {
     type: Sequelize.STRING,
-    
   }
 });
 
