@@ -1,0 +1,26 @@
+<section id="add" class="container">
+    <div class="form-wrap">
+      <h1>Add A Product</h1>
+  {{#each errors}}
+  <div class="error">
+    <p>{{text}}</p>
+  </div>
+  {{/each}}
+      <form action="/products/add" method="POST">
+        <div class="input-group">
+          <label for="name">Product Title</label>
+          <input type="text" name="name" id="name"  placeholder="eg. Small Wordpress website, React developer"
+            maxlength="100" value={{name}}>
+        </div>
+        <div class="input-group">
+          <label for="budget">Price (Leave blank for unknown)</label>
+          <input type="number" name="price" id="price" class="input-box" placeholder="eg. 500, 5000, 10000" value={{price}}>
+        </div>
+        <div class="input-group">
+          <label for="description">Product Date</label>
+          {{date}}
+        </div>
+        <input type="submit" value="Add Product" class="btn btn-reverse">
+      </form>
+    </div>
+  </section>

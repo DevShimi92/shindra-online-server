@@ -1,0 +1,14 @@
+<section id="products">
+    <h1>Products template</h1>
+
+    {{#each products}}
+    <div class="product">
+        <h3>Produits : {{dataValues.name}}</h3>
+        <p>Prix: {{dataValues.price}}</p>
+        <p>Date: {{dataValues.date}}</p>
+        {{else}}
+        <p>No products available</p>
+    </div>
+
+    {{/each}}
+</section>
