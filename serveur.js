@@ -56,6 +56,7 @@ app.get('/products/new', (req, res) => {
     res.render('add');
 });
 
+// éditer un produit OK
 app.get("/product/edit-products/:id", async (req, res) => {
     const {
         id
@@ -68,6 +69,23 @@ app.get("/product/edit-products/:id", async (req, res) => {
         })
         .then((product) => {
             res.render('edit-product', {
+                dataValues: product
+            });
+        });
+});
+
+app.get('/products/all/:id', async (req, res) => {
+    const {
+        id
+    } = req.params;
+    Product.findOne({
+            where: {
+                idproduct: id
+            },
+            raw: true
+        })
+        .then((product) => {
+            res.render('card', {
                 dataValues: product
             });
         });

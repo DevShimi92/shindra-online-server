@@ -14,17 +14,18 @@
       {{#each products}}
       <tr>
         <td>{{dataValues.idproduct}}</a></td>
-        <td><a href="/products/{{dataValues.idproduct}}">{{dataValues.name}}</a></td>
+        <td><a href="/products/all/{{dataValues.idproduct}}">{{dataValues.name}}</a></td>
         <td>{{dataValues.price}}</td>
         <td>{{dataValues.date}}</td>
         <td>
-          <a class="btn-secondary" href="/product/edit-products/{{dataValues.idproduct}}">Edit</a>
-          <button class="btn-danger deleteBtn" id="{{dataValues.idproduct}}">Delete</button>
+          <a class="btn btn-secondary" href="/product/edit-products/{{dataValues.idproduct}}">Editer</a>
+          <button class="btn btn-danger deleteBtn" id="{{dataValues.idproduct}}">Delete</button>
         </td>
       </tr>
       {{/each}}
     </tbody>
   </table>
+  <a class="btn btn-primary" href="/products/new">Ajouter un produit</a>
 </div>
 
 <script src="/manageProduct.js"></script>
