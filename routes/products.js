@@ -78,7 +78,7 @@ router.post('/edit-product/:id', async (req, res) => {
 });
 // .catch(err => console.log(err)));
 
-// Display add product form
+// Display add product form 
 router.get('/product/add', (req, res) => res.render('add'))
 // Add a product
 router.get('/product/add', (req, res) => {

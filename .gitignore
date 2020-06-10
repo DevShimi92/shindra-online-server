@@ -61,5 +61,6 @@ typings/
 .next
 .idea
 
+.vscode
 package-lock.json
 

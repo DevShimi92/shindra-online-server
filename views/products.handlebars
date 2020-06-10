@@ -13,14 +13,13 @@
     <tbody>
       {{#each products}}
       <tr>
-        {{!-- <th scope="row">{{formatIndex @index}}</th> --}}
         <td><a href="/products{{dataValues.idproduct}}">{{dataValues.idproduct}}</a></td>
         <td>{{dataValues.name}}</td>
         <td>{{dataValues.price}}</td>
         <td>{{dataValues.date}}</td>
         <td>
           <button class="btn-danger deleteBtn" id="{{dataValues.idproduct}}">Delete</button>
-          <a class="btn-secondary" href="/product/edit-products/{{dataValues.idproduct}}">Edit</button> 
+          <a class="btn-secondary" href="/product/edit-products/{{dataValues.idproduct}}">Edit</a>
         </td>
       </tr>
       {{/each}}
@@ -29,17 +28,3 @@
 </div>
 
 <script src="/manageProduct.js"></script>
-{{!-- <section id="products">
-    <h1>Products template</h1>
-
-    {{#each products}}
-    <div class="product">
-        <h3>Produits : {{dataValues.name}}</h3>
-        <p>Prix: {{dataValues.price}}</p>
-        <p>Date: {{dataValues.date}}</p>
-        {{else}}
-        <p>No products available</p>
-    </div>
-
-    {{/each}}
-</section> --}}
