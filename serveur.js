@@ -36,6 +36,7 @@ app.use((req, res, next) => {
     next();
 })
 
+// products routes
 app.use('/products', require('./routes/products'));
 
 
@@ -43,26 +44,6 @@ app.use('/products', require('./routes/products'));
 // players routes
 // app.use('/players', require('./routes/players'));
 
-// app.get("/users", (req, res) => {
-//     var user1 = {firstName : "Dom", lastName: "Lung"}
-//     const user2 = {firstName: "Kev", LastName: "Bauer"}
-//     res.json([user1, user2]);
-//     res.send("Nodemon auto updates when I save this file");
-// })
-
-// app.get('/users/:id', (req, res) => {
-//     console.log("Responding to root route" + req.params.id);
-
-//     res.end();
-// })
-
-// ** User: routes **
-// app.get('/users', (req, res) => {
-//     var q = 'SELECT * FROM users';
-//     conn.query(q, (err, result) => {
-//         res.json({ users: result });
-//     })
-// })
 // Index route afficher la template OK
 app.get('/', (req, res) => {
     res.render('index', {
@@ -76,13 +57,19 @@ app.get('/products/new', (req, res) => {
 });
 
 app.get("/product/edit-products/:id", async (req, res) => {
-    const { id } = req.params;
+    const {
+        id
+    } = req.params;
     Product.findOne({
-        where: { idproduct: id },
-        raw: true
-    })
+            where: {
+                idproduct: id
+            },
+            raw: true
+        })
         .then((product) => {
-            res.render('edit-product', { dataValues: product });
+            res.render('edit-product', {
+                dataValues: product
+            });
         });
 });
 
@@ -93,13 +80,6 @@ app.get("/product/edit-products/:id", async (req, res) => {
 app.get('/products/all/delete', (req, res) => {
     res.render(result);
 });
-
-// app.get('/', (req, res) => {
-//     res.json({ message: 'homepage' })
-// })
-
-// app.get('/', (req, res) => res.send('Hello World!'))
-
 
 // Product routes
 app.use('/products', require('./routes/products'));

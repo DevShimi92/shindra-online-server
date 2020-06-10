@@ -23,9 +23,9 @@ router.post('/new', (req, res) => {
       name: req.body.name,
       price: req.body.price
     }) //fin create
-      .then((addProducts) => {
-          res.redirect('/products/all');
-      });
+    .then((addProducts) => {
+      res.redirect('/products/all');
+    });
 });
 
 
