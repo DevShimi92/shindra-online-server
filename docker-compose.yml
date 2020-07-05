@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql
+    container_name: mysql-prod
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 97490Domi*SQL
+      MYSQL_DATABASE: shindradb
+      MYSQL_USER: shindra
+      MYSQL_PASSWORD: shindra
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  shindra-boutique:
+    image: shindra-boutique:latest
+    container_name: shindra-boutique
+    build:
+      target: production
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      PORT: ${PORT:-5000}
+      DB_NAME: shindradb
+      DB_USER: shindra
+      DB_PASS: shindra
+      DB_HOST: db
+      DB_PORT: 3306
+    ports:
+      - "${PORT:-5000}:${PORT:-5000}"
+    links:
+      - db

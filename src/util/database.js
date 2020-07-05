@@ -1,10 +1,17 @@
 const Sequelize = require('sequelize');
 
+const dbUser = process.env.DB_USER || 'root'
+const dbPass = process.env.DB_PASS
+const dbName = process.env.DB_NAME
+
+const host = process.env.DB_HOST || 'localhost'
+const port = process.env.DB_PORT || 3305
+
 // Connection DB
-const sequelize = new Sequelize('shindradb', 'root', '97490Domi*SQL', {
+const sequelize = new Sequelize(dbName, dbUser, dbPass, {
     dialect: 'mysql',
-    host: 'localhost',
-    port: 3305,
+    host,
+    port,
     define: {
         timestamps: false
     }

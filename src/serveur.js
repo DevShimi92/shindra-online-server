@@ -2,7 +2,7 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const path = require('path');
-const port = 5003;
+const port = process.env.PORT;
 const Product = require('./models/Product');
 
 // Connect Database
@@ -74,6 +74,7 @@ app.get("/product/edit-products/:id", async (req, res) => {
         });
 });
 
+// Affiche une carte
 app.get('/products/all/:id', async (req, res) => {
     const {
         id
